@@ -1,3 +1,4 @@
+import TiTacToeScene from './Scene/TicTacToe/TiTacToeScene';
 import { AssetAdapter } from './Utils/AssetAdapter';
 import { ThemeAdapter } from './Utils/ThemeAdapter';
 import { LoadingUI } from './View/LoadingUI';
@@ -43,8 +44,14 @@ export class Main extends eui.UILayer {
 			this.stage.addChild(loadingView);
 			await RES.loadConfig('resource/default.res.json', 'resource/');
 			await this.loadTheme();
-			await RES.loadGroup('tic_tac_toe', 0, loadingView);
+			await RES.loadGroup('preload', 0, loadingView);
 			this.stage.removeChild(loadingView);
+			console.log('SignusDigital:', RES.getRes('SignusDigital_ttf'));
+			// 注册字体代码
+			egret.registerFontMapping(
+				'SignusDigital',
+				'resource/ttf/SignusDigital.ttf',
+			);
 		} catch (e) {
 			console.error(e);
 		}
@@ -70,5 +77,6 @@ export class Main extends eui.UILayer {
 	 * Create scene interface
 	 */
 	protected createGameScene(): void {
+		this.addChild(new TiTacToeScene());
 	}
 }

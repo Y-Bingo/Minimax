@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.GoBangScene"
+	height="1334" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="750">
+	<e:Image id="bg" source="bg_jpg" locked="true"/>
+	<e:Group horizontalCenter="0" verticalCenter="0" scaleX="0.65" scaleY="0.65">
+		<e:layout>
+			<e:TileLayout horizontalGap="0" verticalGap="0" horizontalAlign="left" verticalAlign="top" orientation="rows" rowAlign="top" columnAlign="left" requestedRowCount="14" requestedColumnCount="14"/>
+		</e:layout>
+	</e:Group>
+</e:Skin>

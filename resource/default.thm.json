@@ -3,6 +3,7 @@
 	},
 	"autoGenerateExmlsList": true,
 	"exmls": [
+        "resource/skins/ticTacToe/BegingPage.exml"
 	],
 	"path": "resource/default.thm.json"
 }

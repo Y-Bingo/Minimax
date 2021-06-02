@@ -1,7 +1,7 @@
+import { LoadingUI } from './Scene/Common/LoadingUI';
 import TiTacToeScene from './Scene/TicTacToe/TiTacToeScene';
 import { AssetAdapter } from './Utils/AssetAdapter';
 import { ThemeAdapter } from './Utils/ThemeAdapter';
-import { LoadingUI } from './View/LoadingUI';
 
 /**
  * 游戏入口类
@@ -46,7 +46,6 @@ export class Main extends eui.UILayer {
 			await this.loadTheme();
 			await RES.loadGroup('preload', 0, loadingView);
 			this.stage.removeChild(loadingView);
-			console.log('SignusDigital:', RES.getRes('SignusDigital_ttf'));
 			// 注册字体代码
 			egret.registerFontMapping(
 				'SignusDigital',

@@ -1,10 +1,10 @@
-import BeginPage from './BeginPage';
+import GamePage from './GamePage';
 
 /**
  * 井字棋场景
  */
 export default class TiTacToeScene extends eui.UILayer {
 	protected childrenCreated() {
-        this.addChild( new BeginPage() )
+        this.addChild( new GamePage() )
     }
 }

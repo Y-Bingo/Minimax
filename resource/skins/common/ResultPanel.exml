@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.ResultPanel"
+ xmlns:e="http://ns.egret.com/eui">
+	<e:Image source="result_avatars_png"/>
+	<e:Image id="img_result" source="result_win_png" horizontalCenter="0" verticalCenter="0"/>
+</e:Skin>

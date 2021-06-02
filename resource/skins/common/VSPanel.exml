@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.VSPanel" xmlns:e="http://ns.egret.com/eui"  xmlns:ns1="*" width="750">
+    <e:Group left="0" right="0">
+        <ns1:Avatar id="avatar_player" skinName="skins.Avatar" scaleX="0.8" scaleY="0.8"  left="100" verticalCenter="-10"/>
+			<e:Image source="vs_png" width="120" height="120" horizontalCenter="0" verticalCenter="0"/>
+        <ns1:Avatar id="avatar_pc" skinName="skins.Avatar" scaleX="0.8" scaleY="0.8"  right="100" verticalCenter="-10"/>
+			<e:layout>
+				<e:BasicLayout/>
+			</e:layout>
+    </e:Group>
+</e:Skin>

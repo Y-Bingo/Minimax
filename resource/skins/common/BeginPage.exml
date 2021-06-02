@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.BeginPage"
+	 width="750"
+	height="1334" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect fillColor="0x151515" fillAlpha="0.5" left="0" right="0" top="0" bottom="0"/>
+	<e:Image id="btn_start" source="btn_start_png" verticalCenter="0" horizontalCenter="0" visible="true"/>
+</e:Skin>

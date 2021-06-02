@@ -1,9 +1,14 @@
 {
-	"skins": {
-	},
+	"skins": {},
 	"autoGenerateExmlsList": true,
 	"exmls": [
-        "resource/skins/ticTacToe/BegingPage.exml"
+		"resource/skins/common/Avatar.exml",
+		"resource/skins/common/BeginPage.exml",
+		"resource/skins/common/ResultPanel.exml",
+		"resource/skins/common/VSPanel.exml",
+		"resource/skins/goBang/GameScene.exml",
+		"resource/skins/ticTacToe/GameScene.exml",
+		"resource/skins/ticTacToe/Piece.exml"
 	],
 	"path": "resource/default.thm.json"
 }

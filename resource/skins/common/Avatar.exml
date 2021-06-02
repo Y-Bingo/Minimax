@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.Avatar"
+ xmlns:e="http://ns.egret.com/eui" width="132" height="132">
+	<e:Image id="img_avatar" source="avatar_pc_png" visible="true" width="132" height="132" y="0" x="0"/>
+	<e:Rect id="img_avatar_mask" ellipseWidth="132" ellipseHeight="132" height="132" y="0" x="0" width="132"/>
+	<e:Image id="img_avatar_border" source="head_image_kuang_png" visible="true" y="0" x="0" fillMode="scale"/>
+	<e:Label id="txt_name" text="Label" fontFamily="SignusDigital" horizontalCenter="0" bottom="-30" size="50" bold="true"/>
+	<e:Image id="img_winner_banner" source="bunting_png" bottom="-42" visible="false" horizontalCenter="0.5"/>
+</e:Skin>

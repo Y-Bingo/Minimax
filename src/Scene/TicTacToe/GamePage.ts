@@ -68,7 +68,6 @@ export default class GamePage extends eui.Component {
 	private gameEnd(result: EResultType): void {
 		this.resultPanel.setResult(result);
 		this.topLayer.addChild(this.resultPanel);
-		console.log(`【游戏结束】：${this._isTurnToPc ? 'PC' : 'Player'} 胜利`);
 	}
 
 	/** 用户交互 */
@@ -87,6 +86,8 @@ export default class GamePage extends eui.Component {
 		this.chessBoard.addChild(piece);
 		if (this._checkWin(this._board, [row, col], pieceType, TTT_COMBO)) {
 			this.gameEnd(this._isTurnToPc ? EResultType.LOSE : EResultType.WIN);
+		} else if (this.checkDraw(this._board, TTT_ROW, TTT_COL)) {
+			this.gameEnd(EResultType.DRAW);
 		} else {
 			this._change();
 		}
@@ -98,6 +99,19 @@ export default class GamePage extends eui.Component {
 		} else {
 		}
 		this._isTurnToPc = !this._isTurnToPc;
+	}
+
+	/**
+	 * 检查是否为和局
+	 */
+	private checkDraw(board: ETTTPiece[][], maxRows: number, maxCols: number): boolean {
+		let count = maxRows * maxCols;
+		for (let i = board.length - 1; i >= 0; i--) {
+			for (let j = board[i].length - 1; j >= 0; j--) {
+				if (board[i][j] !== ETTTPiece.NONE) count--;
+			}
+		}
+		return count === 0;
 	}
 
 	/**

@@ -1,7 +1,7 @@
+import { AssetAdapter } from './Adapter/AssetAdapter';
+import { ThemeAdapter } from './Adapter/ThemeAdapter';
 import { LoadingUI } from './Scene/Common/LoadingUI';
 import TiTacToeScene from './Scene/TicTacToe/TiTacToeScene';
-import { AssetAdapter } from './Utils/AssetAdapter';
-import { ThemeAdapter } from './Utils/ThemeAdapter';
 
 /**
  * 游戏入口类

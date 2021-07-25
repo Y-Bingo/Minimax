@@ -10,9 +10,9 @@ export default class GamePage extends eui.Component {
 	// 皮肤
 	public skinName: any = skins.TTT.GameScene;
 	// 组件
-	private main_bg: eui.Image;
-	private vs_bar: VsPanel;
-	private gp_board: eui.Group;
+	private bg: eui.Image;
+	private vsBar: VsPanel;
+	private chessBoard: eui.Group;
 	// 属性
 	private _pieceArr: Piece[][] = [];
 	private _isTurnToPc: boolean = false;
@@ -33,7 +33,7 @@ export default class GamePage extends eui.Component {
 		this._board = ArrUtil.create(TTT_ROW, TTT_COL) as any;
 
 		// 事件监听
-		this.gp_board.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onGroupTouch, this);
+		this.chessBoard.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onGroupTouch, this);
 	}
 
 	private onGroupTouch(e: egret.TouchEvent): void {

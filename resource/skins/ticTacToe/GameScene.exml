@@ -2,9 +2,9 @@
 <e:Skin class="skins.TTT.GameScene"
 	 width="750"
 	height="1334" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*">
-	<e:Image id="main_bg" source="bg_playing_png" horizontalCenter="0" verticalCenter="0" visible="true" locked="true"/>
-	<ns1:VsPanel id="vs_bar" skinName="skins.VSPanel" y="56.18" locked="true"/>
-	<e:Group id="gp_board" width="540" height="540" horizontalCenter="0" verticalCenter="-69.5">
+	<e:Image id="bgPage" source="bg_playing_png" horizontalCenter="0" verticalCenter="0" visible="true"/>
+	<ns1:VsPanel id="vsBar" skinName="skins.VSPanel" y="56.18" visible="true"/>
+	<e:Group id="chessBoard" width="540" height="540" horizontalCenter="0" verticalCenter="-69.5" visible="true">
 	</e:Group>
 	
 </e:Skin>

@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "avatar_unknow_png,bg_menu_png,bg_playing_png,btn_menu_png,bunting_png,rank_row_png,share_png,img_piece_1_png,img_piece_2_png",
+			"keys": "avatar_unknow_png,bg_menu_png,bg_playing_png,btn_menu_png,bunting_png,rank_row_png,share_png,img_piece_x_png,img_piece_o_png",
 			"name": "tic_tac_toe"
 		},
 		{
@@ -132,12 +132,12 @@
 		{
 			"url": "assets/ticTacToe/img_piece_0.png",
 			"type": "image",
-			"name": "img_piece_1_png"
+			"name": "img_piece_x_png"
 		},
 		{
 			"url": "assets/ticTacToe/img_piece_1.png",
 			"type": "image",
-			"name": "img_piece_2_png"
+			"name": "img_piece_o_png"
 		}
 	]
 }

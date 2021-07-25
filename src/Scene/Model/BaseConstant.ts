@@ -2,9 +2,9 @@
  * 井字棋 枚举
  */
 export enum ETTTPiece {
-	CROSS = 1, // 叉
+	CROSS = 'x', // 叉
 
-	CIRCLE = 2, // 圆
+	CIRCLE = 'o', // 圆
 }
 
 export const TTT_COL = 3;

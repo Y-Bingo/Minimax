@@ -1,4 +1,4 @@
-import { ArrUtil } from '../../Core/Arr';
+import { ArrUtil } from '../../Utils/ArrUtil';
 import { BeginPanel } from '../Common/BeginPage';
 import { Piece } from '../Common/Piece';
 import { VsPanel } from '../Common/VsPanel';

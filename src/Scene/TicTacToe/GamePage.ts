@@ -1,4 +1,5 @@
 import { ArrUtil } from '../../Core/Arr';
+import { BeginPanel } from '../Common/BeginPage';
 import { Piece } from '../Common/Piece';
 import { VsPanel } from '../Common/VsPanel';
 import { ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
@@ -12,7 +13,9 @@ export default class GamePage extends eui.Component {
 	// 组件
 	private bg: eui.Image;
 	private vsBar: VsPanel;
+	private topLayer: eui.Group;
 	private chessBoard: eui.Group;
+	private beginPanel: BeginPanel;
 	// 属性
 	private _pieceArr: Piece[][] = [];
 	private _isTurnToPc: boolean = false;
@@ -23,19 +26,42 @@ export default class GamePage extends eui.Component {
 	 * 节点创建完成
 	 */
 	protected childrenCreated() {
-		// 组件初始化
+		this.initData();
+		this.initUI();
+		this.initEvent();
+	}
+
+	/** 初始化数据 */
+	private initData(): void {
+		// 初始化棋盘数据
+		this._board = ArrUtil.create(TTT_ROW, TTT_COL) as any;
+	}
+
+	/** 初始化UI */
+	private initUI(): void {
+		this.beginPanel = new BeginPanel();
+		this.topLayer.addChild(this.beginPanel);
+		// 初始化棋子
 		for (let i = TTT_ROW; i >= 0; i--) {
 			this._pieceArr[i] = [];
 			for (let j = TTT_ROW; j >= 0; j--) {
 				this._recyclePiece(this._createPiece(i, j));
 			}
 		}
-		this._board = ArrUtil.create(TTT_ROW, TTT_COL) as any;
+	}
 
-		// 事件监听
+	/** 初始化事件 */
+	private initEvent(): void {
+		this.beginPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBegin, this);
 		this.chessBoard.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onGroupTouch, this);
 	}
 
+	/** 开始 */
+	private onBegin(): void {
+		this.beginPanel?.parent.removeChild(this.beginPanel);
+	}
+
+	/** 用户交互 */
 	private onGroupTouch(e: egret.TouchEvent): void {
 		const { localX, localY } = e;
 		const row = Math.floor(localY / TTT_PIECE_CELL_WIDTH);

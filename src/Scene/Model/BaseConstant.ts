@@ -1,4 +1,16 @@
 /**
+ * 胜负类型
+ */
+export enum EResultType {
+	/** 输 */
+	LOSE = 'lose',
+	/** 赢 */
+	WIN = 'win',
+	/** 平局 */
+	DRAW = 'draw',
+}
+
+/**
  * 井字棋 枚举
  */
 export enum ETTTPiece {

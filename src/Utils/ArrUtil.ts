@@ -20,12 +20,12 @@ export class ArrUtil {
 	 * @param cols
 	 * @param rows
 	 */
-	public static create(rows: number, cols: number): number[] {
+	public static create<T extends any>(rows: number, cols: number, val: any = 0): T[] {
 		const temp = [];
 		for (let row = rows - 1; row >= 0; row--) {
 			temp[row] = [];
 			for (let col = cols - 1; col >= 0; col--) {
-				temp[row][col] = 0;
+				temp[row][col] = val;
 			}
 		}
 		return temp;

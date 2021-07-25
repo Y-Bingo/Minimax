@@ -1,8 +1,9 @@
 import { ArrUtil } from '../../Utils/ArrUtil';
 import { BeginPanel } from '../Common/BeginPage';
 import { Piece } from '../Common/Piece';
+import { ResultPanel } from '../Common/ResultPanel';
 import { VsPanel } from '../Common/VsPanel';
-import { ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
+import { EResultType, ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
 
 /**
  * 井字棋
@@ -16,17 +17,17 @@ export default class GamePage extends eui.Component {
 	private topLayer: eui.Group;
 	private chessBoard: eui.Group;
 	private beginPanel: BeginPanel;
+	private resultPanel: ResultPanel;
 	// 属性
-	private _pieceArr: Piece[][] = [];
-	private _isTurnToPc: boolean = false;
-	private _board: ETTTPiece[][]; // 局面数据
+	private _board: ETTTPiece[][]; // 棋盘数据
+	private _pieceArr: Piece[][] = []; // 棋子对象数组
+	private _isTurnToPc: boolean = false; // 回合标记
 
 	/**
 	 * @override
 	 * 节点创建完成
 	 */
 	protected childrenCreated() {
-		this.initData();
 		this.initUI();
 		this.initEvent();
 	}
@@ -34,31 +35,40 @@ export default class GamePage extends eui.Component {
 	/** 初始化数据 */
 	private initData(): void {
 		// 初始化棋盘数据
+		this._isTurnToPc = false;
 		this._board = ArrUtil.create(TTT_ROW, TTT_COL) as any;
+		this._pieceArr = ArrUtil.create(TTT_ROW, TTT_COL, null);
 	}
 
 	/** 初始化UI */
 	private initUI(): void {
+		this.resultPanel = new ResultPanel();
 		this.beginPanel = new BeginPanel();
 		this.topLayer.addChild(this.beginPanel);
-		// 初始化棋子
-		for (let i = TTT_ROW; i >= 0; i--) {
-			this._pieceArr[i] = [];
-			for (let j = TTT_ROW; j >= 0; j--) {
-				this._recyclePiece(this._createPiece(i, j));
-			}
-		}
 	}
 
 	/** 初始化事件 */
 	private initEvent(): void {
-		this.beginPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBegin, this);
+		this.beginPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.gameStart, this);
+		this.resultPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.gameStart, this);
 		this.chessBoard.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onGroupTouch, this);
 	}
 
 	/** 开始 */
-	private onBegin(): void {
-		this.beginPanel?.parent.removeChild(this.beginPanel);
+	private gameStart(): void {
+		this.initData();
+		this.beginPanel?.parent?.removeChild(this.beginPanel);
+		this.resultPanel?.parent?.removeChild(this.resultPanel);
+		while (this.chessBoard.numChildren) {
+			this._recyclePiece(this.chessBoard.getChildAt(0) as Piece);
+		}
+	}
+
+	/** 结束 */
+	private gameEnd(result: EResultType): void {
+		this.resultPanel.setResult(result);
+		this.topLayer.addChild(this.resultPanel);
+		console.log(`【游戏结束】：${this._isTurnToPc ? 'PC' : 'Player'} 胜利`);
 	}
 
 	/** 用户交互 */
@@ -67,7 +77,7 @@ export default class GamePage extends eui.Component {
 		const row = Math.floor(localY / TTT_PIECE_CELL_WIDTH);
 		const col = Math.floor(localX / TTT_PIECE_CELL_HEIGHT);
 		if (this._pieceArr[row] && this._pieceArr[row][col]) {
-			console.log('已经有棋子了');
+			console.log(`【${row}, ${col}】:${this._pieceArr[row][col]}`);
 			return;
 		}
 		const pieceType = this._isTurnToPc ? ETTTPiece.CIRCLE : ETTTPiece.CROSS;
@@ -76,7 +86,7 @@ export default class GamePage extends eui.Component {
 		this._pieceArr[row][col] = piece;
 		this.chessBoard.addChild(piece);
 		if (this._checkWin(this._board, [row, col], pieceType, TTT_COMBO)) {
-			console.log(`【游戏结束】：${this._isTurnToPc ? 'PC' : 'Player'} 胜利`);
+			this.gameEnd(this._isTurnToPc ? EResultType.LOSE : EResultType.WIN);
 		} else {
 			this._change();
 		}
@@ -167,6 +177,7 @@ export default class GamePage extends eui.Component {
 		return pieceIns;
 	}
 	private _recyclePiece(pieceIns: Piece): void {
+		if (!pieceIns) return;
 		pieceIns.parent?.removeChild(pieceIns);
 		this._pieceList.push(pieceIns);
 	}

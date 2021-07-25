@@ -9,6 +9,7 @@ export enum ETTTPiece {
 
 export const TTT_COL = 3;
 export const TTT_ROW = 3;
+export const TTT_COMBO = 3;
 export const TTT_PIECE_CELL_WIDTH = 180;
 export const TTT_PIECE_CELL_HEIGHT = 180;
 

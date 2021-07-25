@@ -1,7 +1,7 @@
 import { ArrUtil } from '../../Core/Arr';
 import { Piece } from '../Common/Piece';
 import { VsPanel } from '../Common/VsPanel';
-import { ETTTPiece, TTT_COL, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
+import { ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
 
 /**
  * 井字棋
@@ -24,12 +24,12 @@ export default class GamePage extends eui.Component {
 	 */
 	protected childrenCreated() {
 		// 组件初始化
-		// for (let i = TTT_ROW; i >= 0; i--) {
-		// 	this._pieceArr[i] = [];
-		// 	for (let j = TTT_ROW; j >= 0; j--) {
-		// 		this._recyclePiece(this._createPiece(i, j));
-		// 	}
-		// }
+		for (let i = TTT_ROW; i >= 0; i--) {
+			this._pieceArr[i] = [];
+			for (let j = TTT_ROW; j >= 0; j--) {
+				this._recyclePiece(this._createPiece(i, j));
+			}
+		}
 		this._board = ArrUtil.create(TTT_ROW, TTT_COL) as any;
 
 		// 事件监听
@@ -40,14 +40,90 @@ export default class GamePage extends eui.Component {
 		const { localX, localY } = e;
 		const row = Math.floor(localY / TTT_PIECE_CELL_WIDTH);
 		const col = Math.floor(localX / TTT_PIECE_CELL_HEIGHT);
-		if (this._pieceArr[row][col]) {
+		if (this._pieceArr[row] && this._pieceArr[row][col]) {
 			console.log('已经有棋子了');
 			return;
 		}
-		const piece = this._createPiece(row, col, this._isTurnToPc ? ETTTPiece.CIRCLE : ETTTPiece.CROSS);
+		const pieceType = this._isTurnToPc ? ETTTPiece.CIRCLE : ETTTPiece.CROSS;
+		const piece = this._createPiece(row, col, pieceType);
+		this._board[row][col] = pieceType;
 		this._pieceArr[row][col] = piece;
-		this.gp_board.addChild(piece);
-		this._change();
+		this.chessBoard.addChild(piece);
+		if (this._checkWin(this._board, [row, col], pieceType, TTT_COMBO)) {
+			console.log(`【游戏结束】：${this._isTurnToPc ? 'PC' : 'Player'} 胜利`);
+		} else {
+			this._change();
+		}
+	}
+
+	/** 切换玩家  */
+	private _change(): void {
+		if (this._isTurnToPc) {
+		} else {
+		}
+		this._isTurnToPc = !this._isTurnToPc;
+	}
+
+	/**
+	 * 落子点判断是否成功
+	 * @param board 棋盘
+	 * @param p 落子坐标 [ row, col ]
+	 * @param type 落子类型
+	 */
+	private _checkWin(board: ETTTPiece[][], p: number[], type: ETTTPiece, max: number): boolean {
+		let count = 0;
+		const rows = board.length;
+		const cols = board[0].length;
+
+		// 垂直方向遍历
+		count = 1;
+		for (let i = 1; i < max; i++) {
+			if (p[0] - i >= 0 && board[p[0] - i][p[1]] === type) {
+				count++;
+			}
+			if (p[0] + i < rows && board[p[0] + i][p[1]] === type) {
+				count++;
+			}
+		}
+		if (count >= max) return true;
+
+		// 水平方向遍历
+		count = 1;
+		for (let i = 1; i < max; i++) {
+			if (p[1] - i >= 0 && board[p[0]][p[1] - i] === type) {
+				count++;
+			}
+			if (p[1] + i < cols && board[p[0]][p[1] + i] === type) {
+				count++;
+			}
+		}
+		if (count >= max) return true;
+
+		// 正对角方向遍历 左上 -> 右下
+		count = 1;
+		for (let i = 1; i < max; i++) {
+			if (p[0] - i >= 0 && p[1] - i >= 0 && board[p[0] - i][p[1] - i] === type) {
+				count++;
+			}
+			if (p[0] + i < rows && p[1] + i < cols && board[p[0] + i][p[1] + i] === type) {
+				count++;
+			}
+		}
+		if (count >= max) return true;
+
+		// 反对角方向遍历 右上 -> 左下
+		count = 1;
+		for (let i = 1; i < max; i++) {
+			if (p[0] - i >= 0 && p[1] + i < cols && board[p[0] - i][p[1] + i] === type) {
+				count++;
+			}
+			if (p[0] + i < rows && p[1] - i >= 0 && board[p[0] + i][p[1] - i] === type) {
+				count++;
+			}
+		}
+		if (count >= max) return true;
+
+		return false;
 	}
 
 	// 棋子工厂
@@ -67,34 +143,5 @@ export default class GamePage extends eui.Component {
 	private _recyclePiece(pieceIns: Piece): void {
 		pieceIns.parent?.removeChild(pieceIns);
 		this._pieceList.push(pieceIns);
-	}
-
-	/** 切换玩家  */
-	private _change(): void {
-		if (this._isTurnToPc) {
-		} else {
-		}
-		this._isTurnToPc = !this._isTurnToPc;
-	}
-
-	/**
-	 * 落子点判断是否成功
-	 * @param board 棋盘
-	 * @param p 落子坐标 [ row, col ]
-	 * @param type 落子类型
-	 */
-	private _checkWin(board: ETTTPiece[][], p: number[], type: ETTTPiece): void {
-		const count = 0;
-		const rows = board.length;
-		const cols = board[0].length;
-		const visits = ArrUtil.create(rows, cols);
-		for (let row = 0; row < rows; row++) {
-			for (let col = 0; col < cols; col++) {
-				// 没子，且遍历过了
-				if (visits[row][col] || board[row][col]) {
-					visits[row][col] = 1;
-				}
-			}
-		}
 	}
 }

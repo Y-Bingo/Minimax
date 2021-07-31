@@ -1,7 +1,7 @@
 import { AssetAdapter } from './Adapter/AssetAdapter';
 import { ThemeAdapter } from './Adapter/ThemeAdapter';
 import { LoadingUI } from './Scene/Common/LoadingUI';
-import TiTacToeScene from './Scene/TicTacToe/TiTacToeScene';
+import TicTacToeGame from './Scene/TicTacToe/TicTacToeGame';
 
 /**
  * 游戏入口类
@@ -47,10 +47,7 @@ export class Main extends eui.UILayer {
 			await RES.loadGroup('preload', 0, loadingView);
 			this.stage.removeChild(loadingView);
 			// 注册字体代码
-			egret.registerFontMapping(
-				'SignusDigital',
-				'resource/ttf/SignusDigital.ttf',
-			);
+			egret.registerFontMapping('SignusDigital', 'resource/ttf/SignusDigital.ttf');
 		} catch (e) {
 			console.error(e);
 		}
@@ -76,6 +73,6 @@ export class Main extends eui.UILayer {
 	 * Create scene interface
 	 */
 	protected createGameScene(): void {
-		this.addChild(new TiTacToeScene());
+		this.addChild(new TicTacToeGame());
 	}
 }

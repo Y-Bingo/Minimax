@@ -8,7 +8,7 @@ import { EResultType, ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_
 /**
  * 井字棋
  */
-export default class GamePage extends eui.Component {
+export default class TicTacToeGame extends eui.Component {
 	// 皮肤
 	public skinName: any = skins.TTT.GameScene;
 	// 组件

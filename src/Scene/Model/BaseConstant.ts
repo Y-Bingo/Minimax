@@ -10,8 +10,11 @@ export enum EResultType {
 	DRAW = 'draw',
 }
 
+/** 空 定义 */
+export const EMPTY = '0';
+
 /**
- * 井字棋 枚举
+ * 井字棋 棋类枚举
  */
 export enum ETTTPiece {
 	EMPTY = '0', // 空
@@ -20,11 +23,15 @@ export enum ETTTPiece {
 
 	CIRCLE = 'o', // 圆
 }
-
+/** 最大列数 */
 export const TTT_COL = 3;
+/** 最大行数 */
 export const TTT_ROW = 3;
+/** 连击 combo 数 */
 export const TTT_COMBO = 3;
+/** 每格棋子的宽度 */
 export const TTT_PIECE_CELL_WIDTH = 180;
+/** 每格棋子的高度 */
 export const TTT_PIECE_CELL_HEIGHT = 180;
 
 /** 遍历顺序 */

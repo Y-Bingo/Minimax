@@ -4,7 +4,7 @@ import { Piece } from '../Common/Piece';
 import { ResultPanel } from '../Common/ResultPanel';
 import { VsPanel } from '../Common/VsPanel';
 import { EResultType, ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
-import { evaluateBoard } from './Score';
+import GameModel from './GameModel';
 
 /**
  * 井字棋
@@ -20,9 +20,7 @@ export default class TicTacToeGame extends eui.Component {
 	private beginPanel: BeginPanel;
 	private resultPanel: ResultPanel;
 	// 属性
-	private _board: ETTTPiece[][]; // 棋盘数据
 	private _pieceArr: Piece[][] = []; // 棋子对象数组
-	private _isTurnToPc: boolean = false; // 回合标记
 
 	/**
 	 * @override
@@ -35,9 +33,7 @@ export default class TicTacToeGame extends eui.Component {
 
 	/** 初始化数据 */
 	private initData(): void {
-		// 初始化棋盘数据
-		this._isTurnToPc = false;
-		this._board = ArrUtil.create(TTT_ROW, TTT_COL, ETTTPiece.EMPTY) as any;
+		GameModel.init();
 		this._pieceArr = ArrUtil.create(TTT_ROW, TTT_COL, null);
 	}
 
@@ -66,7 +62,10 @@ export default class TicTacToeGame extends eui.Component {
 	}
 
 	/** 结束 */
-	private gameEnd(result: EResultType): void {
+	private gameEnd(result?: EResultType): void {
+		if (!result) {
+			result = GameModel.isTurnToPc ? EResultType.LOSE : EResultType.WIN;
+		}
 		this.resultPanel.setResult(result);
 		this.topLayer.addChild(this.resultPanel);
 	}
@@ -80,16 +79,23 @@ export default class TicTacToeGame extends eui.Component {
 			console.log(`【${row}, ${col}】:${this._pieceArr[row][col]}`);
 			return;
 		}
-		const pieceType = this._isTurnToPc ? ETTTPiece.CIRCLE : ETTTPiece.CROSS;
-		const piece = this._createPiece(row, col, pieceType);
-		this._board[row][col] = pieceType;
+
+		const pieceType = GameModel.isTurnToPc ? ETTTPiece.CROSS : ETTTPiece.CIRCLE;
+		this.onLayDown(row, col, pieceType);
+	}
+
+	/** 下棋 */
+	private onLayDown(row: number, col: number, type: ETTTPiece): void {
+		// 更新数据
+		GameModel.board[row][col] = type;
+		// 更新 UI
+		const piece = this._createPiece(row, col, type);
 		this._pieceArr[row][col] = piece;
 		this.chessBoard.addChild(piece);
-
-		console.log('局面评分：', evaluateBoard(this._board, ETTTPiece.CIRCLE, TTT_COMBO));
-		if (this._checkWin(this._board, [row, col], pieceType, TTT_COMBO)) {
-			this.gameEnd(this._isTurnToPc ? EResultType.LOSE : EResultType.WIN);
-		} else if (this.checkDraw(this._board, TTT_ROW, TTT_COL)) {
+		// 检测局面
+		if (this._checkWin(GameModel.board, [row, col], type, TTT_COMBO)) {
+			this.gameEnd();
+		} else if (this.checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
 			this.gameEnd(EResultType.DRAW);
 		} else {
 			this._change();
@@ -98,10 +104,7 @@ export default class TicTacToeGame extends eui.Component {
 
 	/** 切换玩家  */
 	private _change(): void {
-		if (this._isTurnToPc) {
-		} else {
-		}
-		this._isTurnToPc = !this._isTurnToPc;
+		GameModel.isTurnToPc = !GameModel.isTurnToPc;
 	}
 
 	/**

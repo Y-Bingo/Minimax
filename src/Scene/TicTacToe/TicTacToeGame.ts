@@ -1,10 +1,13 @@
 import { ArrUtil } from '../../Utils/ArrUtil';
+import EE from '../../Utils/EventUtil';
 import { BeginPanel } from '../Common/BeginPage';
 import { Piece } from '../Common/Piece';
 import { ResultPanel } from '../Common/ResultPanel';
 import { VsPanel } from '../Common/VsPanel';
 import { EResultType, ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
+import { GameEventType } from '../Model/EventType';
 import GameModel from './GameModel';
+import PCPlayerSimulate from './PCPlayerSimulate';
 
 /**
  * 井字棋
@@ -19,6 +22,8 @@ export default class TicTacToeGame extends eui.Component {
 	private chessBoard: eui.Group;
 	private beginPanel: BeginPanel;
 	private resultPanel: ResultPanel;
+	// 玩家
+	private pcPlayer: PCPlayerSimulate;
 	// 属性
 	private _pieceArr: Piece[][] = []; // 棋子对象数组
 
@@ -29,6 +34,7 @@ export default class TicTacToeGame extends eui.Component {
 	protected childrenCreated() {
 		this.initUI();
 		this.initEvent();
+		this.initPlayer();
 	}
 
 	/** 初始化数据 */
@@ -49,6 +55,13 @@ export default class TicTacToeGame extends eui.Component {
 		this.beginPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.gameStart, this);
 		this.resultPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.gameStart, this);
 		this.chessBoard.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onGroupTouch, this);
+
+		EE.on(GameEventType.DRAW_PIECE, this.onDrawPiece, this);
+	}
+
+	/** 初始化玩家 */
+	private initPlayer(): void {
+		this.pcPlayer = new PCPlayerSimulate(ETTTPiece.CROSS);
 	}
 
 	/** 开始 */
@@ -59,6 +72,8 @@ export default class TicTacToeGame extends eui.Component {
 		while (this.chessBoard.numChildren) {
 			this._recyclePiece(this.chessBoard.getChildAt(0) as Piece);
 		}
+
+		EE.emit(GameEventType.GAME_START);
 	}
 
 	/** 结束 */
@@ -68,6 +83,8 @@ export default class TicTacToeGame extends eui.Component {
 		}
 		this.resultPanel.setResult(result);
 		this.topLayer.addChild(this.resultPanel);
+
+		EE.emit(GameEventType.GAME_OVER);
 	}
 
 	/** 用户交互 */
@@ -82,6 +99,12 @@ export default class TicTacToeGame extends eui.Component {
 
 		const pieceType = GameModel.isTurnToPc ? ETTTPiece.CROSS : ETTTPiece.CIRCLE;
 		this.onLayDown(row, col, pieceType);
+	}
+
+	/** 下子 */
+	private onDrawPiece(e: egret.Event): void {
+		const result = e.data;
+		this.onLayDown(result.row, result.col, result.type);
 	}
 
 	/** 下棋 */
@@ -105,6 +128,8 @@ export default class TicTacToeGame extends eui.Component {
 	/** 切换玩家  */
 	private _change(): void {
 		GameModel.isTurnToPc = !GameModel.isTurnToPc;
+
+		EE.emit(GameEventType.ROUND_CHANGE);
 	}
 
 	/**

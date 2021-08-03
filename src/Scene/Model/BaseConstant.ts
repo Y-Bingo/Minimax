@@ -14,7 +14,7 @@ export enum EResultType {
  * 井字棋 枚举
  */
 export enum ETTTPiece {
-	NONE = 0, // 空
+	EMPTY = '0', // 空
 
 	CROSS = 'x', // 叉
 

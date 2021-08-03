@@ -4,6 +4,7 @@ import { Piece } from '../Common/Piece';
 import { ResultPanel } from '../Common/ResultPanel';
 import { VsPanel } from '../Common/VsPanel';
 import { EResultType, ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
+import { evaluateBoard } from './Score';
 
 /**
  * 井字棋
@@ -36,7 +37,7 @@ export default class TicTacToeGame extends eui.Component {
 	private initData(): void {
 		// 初始化棋盘数据
 		this._isTurnToPc = false;
-		this._board = ArrUtil.create(TTT_ROW, TTT_COL) as any;
+		this._board = ArrUtil.create(TTT_ROW, TTT_COL, ETTTPiece.EMPTY) as any;
 		this._pieceArr = ArrUtil.create(TTT_ROW, TTT_COL, null);
 	}
 
@@ -84,6 +85,8 @@ export default class TicTacToeGame extends eui.Component {
 		this._board[row][col] = pieceType;
 		this._pieceArr[row][col] = piece;
 		this.chessBoard.addChild(piece);
+
+		console.log('局面评分：', evaluateBoard(this._board, ETTTPiece.CIRCLE, TTT_COMBO));
 		if (this._checkWin(this._board, [row, col], pieceType, TTT_COMBO)) {
 			this.gameEnd(this._isTurnToPc ? EResultType.LOSE : EResultType.WIN);
 		} else if (this.checkDraw(this._board, TTT_ROW, TTT_COL)) {
@@ -108,7 +111,7 @@ export default class TicTacToeGame extends eui.Component {
 		let count = maxRows * maxCols;
 		for (let i = board.length - 1; i >= 0; i--) {
 			for (let j = board[i].length - 1; j >= 0; j--) {
-				if (board[i][j] !== ETTTPiece.NONE) count--;
+				if (board[i][j] !== ETTTPiece.EMPTY) count--;
 			}
 		}
 		return count === 0;

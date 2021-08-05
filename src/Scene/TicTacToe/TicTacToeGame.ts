@@ -6,6 +6,7 @@ import { ResultPanel } from '../Common/ResultPanel';
 import { VsPanel } from '../Common/VsPanel';
 import { EResultType, ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
 import { GameEventType } from '../Model/EventType';
+import { checkDrawWin } from './Evaluate';
 import GameModel from './GameModel';
 import PCPlayerSimulate from './PCPlayerSimulate';
 
@@ -116,7 +117,9 @@ export default class TicTacToeGame extends eui.Component {
 		this._pieceArr[row][col] = piece;
 		this.chessBoard.addChild(piece);
 		// 检测局面
-		if (this._checkWin(GameModel.board, [row, col], type, TTT_COMBO)) {
+		// if (this._checkWin(GameModel.board, [row, col], type, TTT_COMBO)) {
+		if (checkDrawWin(GameModel.board, [row, col], type, TTT_COMBO)) {
+		// if (checkWin(GameModel.board, type, TTT_COMBO)) {
 			this.gameEnd();
 		} else if (this.checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
 			this.gameEnd(EResultType.DRAW);
@@ -143,68 +146,6 @@ export default class TicTacToeGame extends eui.Component {
 			}
 		}
 		return count === 0;
-	}
-
-	/**
-	 * 落子点判断是否成功
-	 * @param board 棋盘
-	 * @param p 落子坐标 [ row, col ]
-	 * @param type 落子类型
-	 */
-	private _checkWin(board: ETTTPiece[][], p: number[], type: ETTTPiece, max: number): boolean {
-		let count = 0;
-		const rows = board.length;
-		const cols = board[0].length;
-
-		// 垂直方向遍历
-		count = 1;
-		for (let i = 1; i < max; i++) {
-			if (p[0] - i >= 0 && board[p[0] - i][p[1]] === type) {
-				count++;
-			}
-			if (p[0] + i < rows && board[p[0] + i][p[1]] === type) {
-				count++;
-			}
-		}
-		if (count >= max) return true;
-
-		// 水平方向遍历
-		count = 1;
-		for (let i = 1; i < max; i++) {
-			if (p[1] - i >= 0 && board[p[0]][p[1] - i] === type) {
-				count++;
-			}
-			if (p[1] + i < cols && board[p[0]][p[1] + i] === type) {
-				count++;
-			}
-		}
-		if (count >= max) return true;
-
-		// 正对角方向遍历 左上 -> 右下
-		count = 1;
-		for (let i = 1; i < max; i++) {
-			if (p[0] - i >= 0 && p[1] - i >= 0 && board[p[0] - i][p[1] - i] === type) {
-				count++;
-			}
-			if (p[0] + i < rows && p[1] + i < cols && board[p[0] + i][p[1] + i] === type) {
-				count++;
-			}
-		}
-		if (count >= max) return true;
-
-		// 反对角方向遍历 右上 -> 左下
-		count = 1;
-		for (let i = 1; i < max; i++) {
-			if (p[0] - i >= 0 && p[1] + i < cols && board[p[0] - i][p[1] + i] === type) {
-				count++;
-			}
-			if (p[0] + i < rows && p[1] - i >= 0 && board[p[0] + i][p[1] - i] === type) {
-				count++;
-			}
-		}
-		if (count >= max) return true;
-
-		return false;
 	}
 
 	// 棋子工厂

@@ -103,3 +103,66 @@ export function evaluateBoard(board: any[][], type: any, maxCombo: number): numb
 
 	return score;
 }
+
+/**
+ * 落子点判断是否成功
+ * @param board 棋盘
+ * @param p 落子坐标 [ row, col ]
+ * @param type 落子类型
+ */
+export function checkDrawWin(board: any[][], p: number[], type: any, max: number): boolean {
+	let count = 0;
+	const rows = board.length;
+	const cols = board[0].length;
+
+	// 垂直方向遍历
+	count = 1;
+	for (let i = 1; i < max; i++) {
+		if (p[0] - i >= 0 && board[p[0] - i][p[1]] === type) {
+			count++;
+		}
+		if (p[0] + i < rows && board[p[0] + i][p[1]] === type) {
+			count++;
+		}
+	}
+	if (count >= max) return true;
+
+	// 水平方向遍历
+	count = 1;
+	for (let i = 1; i < max; i++) {
+		if (p[1] - i >= 0 && board[p[0]][p[1] - i] === type) {
+			count++;
+		}
+		if (p[1] + i < cols && board[p[0]][p[1] + i] === type) {
+			count++;
+		}
+	}
+	if (count >= max) return true;
+
+	// 正对角方向遍历 左上 -> 右下
+	count = 1;
+	for (let i = 1; i < max; i++) {
+		if (p[0] - i >= 0 && p[1] - i >= 0 && board[p[0] - i][p[1] - i] === type) {
+			count++;
+		}
+		if (p[0] + i < rows && p[1] + i < cols && board[p[0] + i][p[1] + i] === type) {
+			count++;
+		}
+	}
+	if (count >= max) return true;
+
+	// 反对角方向遍历 右上 -> 左下
+	count = 1;
+	for (let i = 1; i < max; i++) {
+		if (p[0] - i >= 0 && p[1] + i < cols && board[p[0] - i][p[1] + i] === type) {
+			count++;
+		}
+		if (p[0] + i < rows && p[1] - i >= 0 && board[p[0] + i][p[1] - i] === type) {
+			count++;
+		}
+	}
+	if (count >= max) return true;
+
+	return false;
+}
+

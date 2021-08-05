@@ -166,3 +166,72 @@ export function checkDrawWin(board: any[][], p: number[], type: any, max: number
 	return false;
 }
 
+/**
+ * 棋盘判断是否结束成功
+ * @param board 棋盘
+ * @param p 落子坐标 [ row, col ]
+ * @param type 落子类型
+ */
+export function checkWin(board: any[][], type: any, maxCombo: number): boolean {
+	let count = 0;
+	const rows = board.length;
+	const cols = board[0].length;
+
+	// 垂直方向遍历
+	count = 0;
+	//【|】 垂直方向遍历
+	for (let col = 0; col < cols; col++) {
+		for (let row = 0; row <= rows - maxCombo; row++) {
+			for (let i = 0; i < maxCombo; i++) {
+				if (board[row + i][col] === type) {
+					count++;
+				}
+			}
+			if (count >= maxCombo) return true;
+			count = 0;
+		}
+	}
+	//【——】水平方向遍历
+	count = 0;
+	for (let row = 0; row < rows; row++) {
+		for (let col = 0; col <= cols - maxCombo; col++) {
+			for (let i = 0; i < maxCombo; i++) {
+				if (board[row][col + i] === type) {
+					count++;
+				}
+			}
+			if (count >= maxCombo) return true;
+			count = 0;
+		}
+	}
+
+	//【\】 正对角方向遍历 左上 -> 右下
+	count = 0;
+	for (let row = 0; row <= rows - maxCombo; row++) {
+		for (let col = 0; col <= cols - maxCombo; col++) {
+			for (let i = 0; i < maxCombo; i++) {
+				if (board[row + i][col + i] === type) {
+					count++;
+				}
+			}
+			if (count >= maxCombo) return true;
+			count = 0;
+		}
+	}
+
+	//【/】反对角方向遍历 右上 -> 左下
+	count = 0;
+	for (let row = 0; row <= rows - maxCombo; row++) {
+		for (let col = cols - 1; col >= maxCombo - 1; col--) {
+			for (let i = 0; i < maxCombo; i++) {
+				if (board[row + i][col - i] === type) {
+					count++;
+				}
+			}
+			if (count >= maxCombo) return true;
+			count = 0;
+		}
+	}
+
+	return false;
+}

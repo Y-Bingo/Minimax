@@ -49,6 +49,13 @@ export function evaluateLine(n: any[], type: any): number {
 	return countToScore(count, block, empty);
 }
 
+/**
+ * 评价棋盘
+ * @param board
+ * @param type
+ * @param maxCombo
+ * @returns
+ */
 export function evaluateBoard(board: any[][], type: any, maxCombo: number): number {
 	let score = 0;
 	const rows = board.length;
@@ -91,7 +98,7 @@ export function evaluateBoard(board: any[][], type: any, maxCombo: number): numb
 
 	//【/】反对角方向遍历 右上 -> 左下
 	console.log('===== 反对角 =====');
-	for (let row = rows - 1; row >= maxCombo - 1; row--) {
+	for (let row = 0; row <= rows - maxCombo; row++) {
 		for (let col = cols - 1; col >= maxCombo - 1; col--) {
 			for (let i = 0; i < maxCombo; i++) {
 				n[i] = board[row - i][col - i];

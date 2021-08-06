@@ -9,10 +9,12 @@ import GameModel from './GameModel';
  * pc 玩家模拟
  */
 export default class PCPlayerSimulate {
+	/** pc 模拟玩家等级 */
+	public level: string = 'easy';
 	/** 着棋类型 */
-	private pieceType: any;
+	public pieceType: any;
 	/** 步数记录 */
-	private step: number;
+	public step: number;
 
 	constructor(pieceType: any) {
 		this.pieceType = pieceType;
@@ -26,7 +28,7 @@ export default class PCPlayerSimulate {
 	 */
 	private onGameStart(): void {
 		this.step = 0;
-		console.log('收到游戏开始报告');
+		console.log(`【${this.level}】电脑加入战局`);
 	}
 
 	/**
@@ -55,7 +57,7 @@ export default class PCPlayerSimulate {
 	 * @param deep
 	 * @returns
 	 */
-	private maxmin(board: any[][]): any {
+	protected maxmin(board: any[][]): any {
 		const tempBoard = ArrUtil.clone(board);
 		const rows = tempBoard.length;
 		const cols = tempBoard[0].length;
@@ -92,7 +94,13 @@ export default class PCPlayerSimulate {
 		console.log('收到游戏结束报告');
 	}
 
-	private evaluateBoard(board: any[][], maxCombo: number): number {
+	/**
+	 * 评价局面
+	 * @param board
+	 * @param maxCombo
+	 * @returns
+	 */
+	protected evaluateBoard(board: any[][], maxCombo: number): number {
 		let myScore = 0;
 		let enemyScore = 0;
 		const rows = board.length;

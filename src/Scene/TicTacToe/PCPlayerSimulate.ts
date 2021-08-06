@@ -37,32 +37,7 @@ export default class PCPlayerSimulate {
 		let startTimestamp = Date.now();
 		this.step++;
 		console.log(`========== 步数${this.step} ==========`);
-		const board = ArrUtil.clone(GameModel.board);
-		const rows = board.length;
-		const cols = board[0].length;
-		const score = ArrUtil.create(rows, cols, 0);
-		let result = {
-			row: -1,
-			col: -1,
-			score: -Infinity,
-			type: this.pieceType,
-		};
-		for (let i = 0; i < rows; i++) {
-			for (let j = 0; j < cols; j++) {
-				if (board[i][j] !== EMPTY) continue;
-				board[i][j] = this.pieceType;
-				let boardScore = this.evaluateBoard(board, TTT_COMBO);
-				if (result.score < boardScore) {
-					result.score = boardScore;
-					result.row = i;
-					result.col = j;
-				}
-				score[i][j] = boardScore;
-				// console.log(`【${i},${j}】局面评分： ${score[i][j]}`);
-				board[i][j] = EMPTY;
-			}
-		}
-		console.table(score);
+		const result = this.maxmin(GameModel.board);
 		if (Date.now() - startTimestamp < 1000) {
 			egret.setTimeout(
 				() => {
@@ -72,6 +47,42 @@ export default class PCPlayerSimulate {
 				1000,
 			);
 		}
+	}
+
+	/**
+	 * min-max 算法
+	 * @param board
+	 * @param deep
+	 * @returns
+	 */
+	private maxmin(board: any[][]): any {
+		const tempBoard = ArrUtil.clone(board);
+		const rows = tempBoard.length;
+		const cols = tempBoard[0].length;
+		const score = ArrUtil.create(rows, cols, 0);
+		let result = {
+			row: -1,
+			col: -1,
+			score: -Infinity,
+			type: this.pieceType,
+		};
+		for (let i = 0; i < rows; i++) {
+			for (let j = 0; j < cols; j++) {
+				if (tempBoard[i][j] !== EMPTY) continue;
+				tempBoard[i][j] = this.pieceType;
+				let boardScore = this.evaluateBoard(tempBoard, TTT_COMBO);
+				if (result.score < boardScore) {
+					result.score = boardScore;
+					result.row = i;
+					result.col = j;
+				}
+				score[i][j] = boardScore;
+				// console.log(`【${i},${j}】局面评分： ${score[i][j]}`);
+				tempBoard[i][j] = EMPTY;
+			}
+		}
+		console.table(score);
+		return result;
 	}
 
 	/**

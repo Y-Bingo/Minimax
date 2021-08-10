@@ -124,7 +124,7 @@ export default class TicTacToeGame extends eui.Component {
 		if (checkDrawWin(GameModel.board, [row, col], type, TTT_COMBO)) {
 			// if (checkWin(GameModel.board, type, TTT_COMBO)) {
 			this.gameEnd();
-		} else if (this.checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
+		} else if (checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
 			this.gameEnd(EResultType.DRAW);
 		} else {
 			this._change();
@@ -138,18 +138,7 @@ export default class TicTacToeGame extends eui.Component {
 		EE.emit(GameEventType.ROUND_CHANGE);
 	}
 
-	/**
-	 * 检查是否为和局
-	 */
-	private checkDraw(board: ETTTPiece[][], maxRows: number, maxCols: number): boolean {
-		let count = maxRows * maxCols;
-		for (let i = board.length - 1; i >= 0; i--) {
-			for (let j = board[i].length - 1; j >= 0; j--) {
-				if (board[i][j] !== ETTTPiece.EMPTY) count--;
-			}
-		}
-		return count === 0;
-	}
+	
 
 	// 棋子工厂
 	private _pieceList: Piece[] = [];

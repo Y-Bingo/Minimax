@@ -1,3 +1,5 @@
+import { EMPTY } from '../Model/BaseConstant';
+
 const SCORE_TABLE = {
 	'000': 1,
 	'100': 10,
@@ -9,11 +11,11 @@ const SCORE_TABLE = {
  * 评分系数
  */
 export enum EScoreTable {
-	NONE = 1,
-	ONE = 10,
-	TWO = 100,
-	THREE = 1000,
-	BLOCK = -100,
+	NONE = 10,
+	ONE = 50,
+	TWO = 500,
+	THREE = 800,
+	BLOCK = -400,
 }
 
 export function countToScore(count: number, block: number, empty?: number): number {
@@ -241,4 +243,17 @@ export function checkWin(board: any[][], type: any, maxCombo: number): boolean {
 	}
 
 	return false;
+}
+
+/**
+ * 检查是否为和局
+ */
+export function checkDraw(board: any[][], maxRows: number, maxCols: number): boolean {
+	let count = maxRows * maxCols;
+	for (let i = board.length - 1; i >= 0; i--) {
+		for (let j = board[i].length - 1; j >= 0; j--) {
+			if (board[i][j] !== EMPTY) count--;
+		}
+	}
+	return count === 0;
 }

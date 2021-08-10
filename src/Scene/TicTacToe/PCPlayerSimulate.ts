@@ -15,6 +15,8 @@ export default class PCPlayerSimulate {
 	public pieceType: any;
 	/** 步数记录 */
 	public step: number;
+	/** 思考深度 */
+	public deep: number = 7;
 
 	constructor(pieceType: any) {
 		this.pieceType = pieceType;
@@ -29,26 +31,24 @@ export default class PCPlayerSimulate {
 	private onGameStart(): void {
 		this.step = 0;
 		console.log(`【${this.level}】电脑加入战局`);
+		if (GameModel.isTurnToPc) {
+			this.drawPiece();
+		}
 	}
 
 	/**
 	 * 【监听】游戏回合交互
 	 */
-	private onRoundChange(): void {
+	protected onRoundChange(): void {
 		if (!GameModel.isTurnToPc) return;
-		let startTimestamp = Date.now();
+		this.drawPiece();
+	}
+
+	protected drawPiece(): void {
 		this.step++;
 		console.log(`========== 步数${this.step} ==========`);
-		const result = this.maxmin(GameModel.board);
-		if (Date.now() - startTimestamp < 1000) {
-			egret.setTimeout(
-				() => {
-					EE.emit(GameEventType.DRAW_PIECE, result);
-				},
-				this,
-				1000,
-			);
-		}
+		const result = this.maxmin(GameModel.board, this.deep);
+		EE.emit(GameEventType.DRAW_PIECE, result);
 	}
 
 	/**
@@ -57,7 +57,7 @@ export default class PCPlayerSimulate {
 	 * @param deep
 	 * @returns
 	 */
-	protected maxmin(board: any[][]): any {
+	protected maxmin(board: any[][], deep: number = 1): any {
 		const tempBoard = ArrUtil.clone(board);
 		const rows = tempBoard.length;
 		const cols = tempBoard[0].length;

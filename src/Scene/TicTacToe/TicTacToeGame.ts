@@ -90,6 +90,8 @@ export default class TicTacToeGame extends eui.Component {
 
 	/** 用户交互 */
 	private onGroupTouch(e: egret.TouchEvent): void {
+		if (GameModel.isTurnToPc) return;
+
 		const { localX, localY } = e;
 		const row = Math.floor(localY / TTT_PIECE_CELL_WIDTH);
 		const col = Math.floor(localX / TTT_PIECE_CELL_HEIGHT);
@@ -99,17 +101,18 @@ export default class TicTacToeGame extends eui.Component {
 		}
 
 		const pieceType = GameModel.isTurnToPc ? ETTTPiece.CROSS : ETTTPiece.CIRCLE;
-		this.onLayDown(row, col, pieceType);
+		this.onLayDown(row, col);
 	}
 
 	/** 下子 */
 	private onDrawPiece(e: egret.Event): void {
 		const result = e.data;
-		this.onLayDown(result.row, result.col, result.type);
+		this.onLayDown(result.row, result.col);
 	}
 
 	/** 下棋 */
-	private onLayDown(row: number, col: number, type: ETTTPiece): void {
+	private onLayDown(row: number, col: number): void {
+		const type = GameModel.isTurnToPc ? GameModel.pcPieceType : GameModel.playerPieceType;
 		// 更新数据
 		GameModel.board[row][col] = type;
 		// 更新 UI
@@ -119,7 +122,7 @@ export default class TicTacToeGame extends eui.Component {
 		// 检测局面
 		// if (this._checkWin(GameModel.board, [row, col], type, TTT_COMBO)) {
 		if (checkDrawWin(GameModel.board, [row, col], type, TTT_COMBO)) {
-		// if (checkWin(GameModel.board, type, TTT_COMBO)) {
+			// if (checkWin(GameModel.board, type, TTT_COMBO)) {
 			this.gameEnd();
 		} else if (this.checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
 			this.gameEnd(EResultType.DRAW);

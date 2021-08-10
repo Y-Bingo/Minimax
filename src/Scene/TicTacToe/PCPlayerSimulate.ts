@@ -66,7 +66,6 @@ export default class PCPlayerSimulate {
 			row: -1,
 			col: -1,
 			score: -Infinity,
-			type: this.pieceType,
 		};
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {

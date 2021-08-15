@@ -6,9 +6,10 @@ import { ResultPanel } from '../Common/ResultPanel';
 import { VsPanel } from '../Common/VsPanel';
 import { EResultType, ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
 import { GameEventType } from '../Model/EventType';
-import { checkDrawWin } from './Evaluate';
+import { checkDraw, checkDrawWin } from './Evaluate';
 import GameModel from './GameModel';
 import PCPlayerSimulate from './PCPlayerSimulate';
+import PCPlayerSimulateNormal from './PCPlayerSimulateNormal';
 
 /**
  * 井字棋
@@ -62,7 +63,8 @@ export default class TicTacToeGame extends eui.Component {
 
 	/** 初始化玩家 */
 	private initPlayer(): void {
-		this.pcPlayer = new PCPlayerSimulate(ETTTPiece.CROSS);
+		// this.pcPlayer = new PCPlayerSimulate(ETTTPiece.CROSS);
+		this.pcPlayer = new PCPlayerSimulateNormal(ETTTPiece.CROSS);
 	}
 
 	/** 开始 */

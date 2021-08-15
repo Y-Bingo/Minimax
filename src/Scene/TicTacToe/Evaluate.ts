@@ -11,11 +11,11 @@ const SCORE_TABLE = {
  * 评分系数
  */
 export enum EScoreTable {
-	NONE = 10,
-	ONE = 50,
-	TWO = 500,
-	THREE = 800,
-	BLOCK = -400,
+	NONE = 0,
+	ONE = 1,
+	TWO = 11,
+	THREE = 20,
+	BLOCK = -5,
 }
 
 export function countToScore(count: number, block: number, empty?: number): number {

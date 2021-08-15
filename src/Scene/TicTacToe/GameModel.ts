@@ -15,7 +15,7 @@ export default class GameModel {
 	 *  初始化
 	 */
 	public static init(): void {
-		GameModel.isTurnToPc = false;
+		GameModel.isTurnToPc = true;
 		GameModel.pcPieceType = ETTTPiece.CROSS;
 		GameModel.playerPieceType = ETTTPiece.CIRCLE;
 		GameModel.board = ArrUtil.create(TTT_ROW, TTT_COL, EMPTY);

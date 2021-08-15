@@ -16,7 +16,7 @@ export default class PCPlayerSimulate {
 	/** 步数记录 */
 	public step: number;
 	/** 思考深度 */
-	public deep: number = 7;
+	public deep: number = 1;
 
 	constructor(pieceType: any) {
 		this.pieceType = pieceType;
@@ -45,10 +45,11 @@ export default class PCPlayerSimulate {
 	}
 
 	protected drawPiece(): void {
-		this.step++;
 		console.log(`========== 步数${this.step} ==========`);
-		const result = this.maxmin(GameModel.board, this.deep);
+		// const result = this.maxmin(GameModel.board, this.deep);
+		const result = this.maxmin(GameModel.board, this.deep - this.step * 2);
 		EE.emit(GameEventType.DRAW_PIECE, result);
+		this.step++;
 	}
 
 	/**

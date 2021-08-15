@@ -11,7 +11,7 @@ export default class PCPlayerSimulateNormal extends PCPlayerSimulate {
 	/** pc 模拟玩家等级 */
 	public level: string = 'normal';
 	/** 思考深度 */
-	public deep: number = 5;
+	public deep: number = 6;
 
 	/**
 	 * @override
@@ -59,7 +59,9 @@ export default class PCPlayerSimulateNormal extends PCPlayerSimulate {
 	private max(board: any[][], deep: number = 1): any {
 		let score = -Infinity;
 		if (deep === 0 || checkWin(board, GameModel.playerPieceType, TTT_COMBO) || checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
-			return this.evaluateBoard(board, TTT_COMBO);
+			score = this.evaluateBoard(board, TTT_COMBO);
+			// console.log(`max ${deep} ${score}`);
+			return score;
 		}
 		const rows = TTT_ROW;
 		const cols = TTT_COL;
@@ -85,7 +87,9 @@ export default class PCPlayerSimulateNormal extends PCPlayerSimulate {
 	private min(board: any[][], deep: number = 1): any {
 		let score = Infinity;
 		if (deep === 0 || checkWin(board, GameModel.pcPieceType, TTT_COMBO) || checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
-			return this.evaluateBoard(board, TTT_COMBO);
+			score = this.evaluateBoard(board, TTT_COMBO);
+			// console.log(`min ${deep} ${score}`);
+			return score;
 		}
 		const rows = TTT_ROW;
 		const cols = TTT_COL;

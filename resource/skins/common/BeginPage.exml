@@ -1,7 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
-<e:Skin class="skins.BeginPage"
-	 width="750"
-	height="1334" xmlns:e="http://ns.egret.com/eui">
-	<e:Rect fillColor="0x151515" fillAlpha="0.5" left="0" right="0" top="0" bottom="0"/>
-	<e:Image id="btnStart" source="btn_start_png" verticalCenter="0" horizontalCenter="0" visible="true"/>
+<e:Skin class="skins.BeginPage" width="750" height="1334" xmlns:e="http://ns.egret.com/eui" xmlns:ns1="*"
+        xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="bg_menu_png" verticalCenter="0"/>
+	<e:Group id="gpAvatar" y="540.683" left="0" right="0" touchThrough="true">
+		<ns1:Avatar id="avatar_pc_0" skinName="skins.Avatar" scaleX="0.8" scaleY="0.8" x="0" y="0" touchChildren="false"/>
+		<ns1:Avatar id="avatar_pc_2" skinName="skins.Avatar" scaleX="0.8" scaleY="0.8" x="448" y="0" touchChildren="false"/>
+		<ns1:Avatar id="avatar_pc_1" skinName="skins.Avatar" scaleX="0.8" scaleY="0.8" x="224" y="0" touchChildren="false"/>
+		<e:layout>
+			<e:HorizontalLayout gap="120" horizontalAlign="center"/>
+		</e:layout>
+	</e:Group>
+	<e:Group y="819.096" horizontalCenter="0.5">
+		<e:RadioButton id="rbFirst" label="offensive" x="0" y="0" skinName="skins.CheckBoxSkin" value="first"/>
+		<e:RadioButton id="rbPost" label="defensive" x="270.8" y="0" skinName="skins.CheckBoxSkin" value="post"/>
+		<e:layout>
+			<e:HorizontalLayout gap="30"/>
+		</e:layout>
+	</e:Group>
+	<e:Image id="btnStart" source="btn_start_png" verticalCenter="313.5" visible="true" horizontalCenter="0"/>
+	<e:Image id="iconVs" source="vs_png" x="382" y="729" anchorOffsetX="128" anchorOffsetY="128" scaleX="0.3" scaleY="0.3"/>
 </e:Skin>

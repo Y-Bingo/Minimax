@@ -6,10 +6,10 @@ import { ResultPanel } from '../Common/ResultPanel';
 import { VsPanel } from '../Common/VsPanel';
 import { EResultType, ETTTPiece, TTT_COL, TTT_COMBO, TTT_PIECE_CELL_HEIGHT, TTT_PIECE_CELL_WIDTH, TTT_ROW } from '../Model/BaseConstant';
 import { GameEventType } from '../Model/EventType';
+import { PcSimulate } from '../Model/GameConstant';
 import { checkDraw, checkDrawWin } from './Evaluate';
 import GameModel from './GameModel';
 import PCPlayerSimulate from './PCPlayerSimulate';
-import PCPlayerSimulateNormal from './PCPlayerSimulateNormal';
 
 /**
  * 井字棋
@@ -36,7 +36,6 @@ export default class TicTacToeGame extends eui.Component {
 	protected childrenCreated() {
 		this.initUI();
 		this.initEvent();
-		this.initPlayer();
 	}
 
 	/** 初始化数据 */
@@ -55,7 +54,7 @@ export default class TicTacToeGame extends eui.Component {
 	/** 初始化事件 */
 	private initEvent(): void {
 		this.beginPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.gameStart, this);
-		this.resultPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.gameStart, this);
+		this.resultPanel?.btnStart?.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onResult, this);
 		this.chessBoard.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onGroupTouch, this);
 
 		EE.on(GameEventType.DRAW_PIECE, this.onDrawPiece, this);
@@ -63,12 +62,15 @@ export default class TicTacToeGame extends eui.Component {
 
 	/** 初始化玩家 */
 	private initPlayer(): void {
-		// this.pcPlayer = new PCPlayerSimulate(ETTTPiece.CROSS);
-		this.pcPlayer = new PCPlayerSimulateNormal(ETTTPiece.CROSS);
+		const simulateCls = PcSimulate[GameModel.pcLevel];
+		this.pcPlayer = new simulateCls(GameModel.pcPieceType);
+
+		this.vsBar.setTarget(GameModel.pcLevel);
 	}
 
 	/** 开始 */
 	private gameStart(): void {
+		this.initPlayer();
 		this.initData();
 		this.beginPanel?.parent?.removeChild(this.beginPanel);
 		this.resultPanel?.parent?.removeChild(this.resultPanel);
@@ -84,10 +86,19 @@ export default class TicTacToeGame extends eui.Component {
 		if (!result) {
 			result = GameModel.isTurnToPc ? EResultType.LOSE : EResultType.WIN;
 		}
+
 		this.resultPanel.setResult(result);
 		this.topLayer.addChild(this.resultPanel);
 
 		EE.emit(GameEventType.GAME_OVER);
+		this.pcPlayer.onDestroy();
+		this.pcPlayer = null;
+	}
+
+	/** 结算 */
+	private onResult(): void {
+		this.resultPanel?.parent?.removeChild(this.resultPanel);
+		this.topLayer.addChild(this.beginPanel);
 	}
 
 	/** 用户交互 */
@@ -136,11 +147,9 @@ export default class TicTacToeGame extends eui.Component {
 	/** 切换玩家  */
 	private _change(): void {
 		GameModel.isTurnToPc = !GameModel.isTurnToPc;
-
+		GameModel.totalStep++;
 		EE.emit(GameEventType.ROUND_CHANGE);
 	}
-
-	
 
 	// 棋子工厂
 	private _pieceList: Piece[] = [];

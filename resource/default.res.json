@@ -5,7 +5,7 @@
 			"name": "tic_tac_toe"
 		},
 		{
-			"keys": "SignusDigital_ttf,avatar_pc_png,avatar_player_png,avatar_png,btn_start_png,result_avatars_png,result_draw_png,result_lose_png,result_win_png,vs_png",
+			"keys": "SignusDigital_ttf,avatar_player_png,avatar_png,btn_start_png,result_avatars_png,result_draw_png,result_lose_png,result_win_png,vs_png,avatar_pc_2_png,avatar_pc_1_png,avatar_pc_3_png,point_png",
 			"name": "preload"
 		},
 		{
@@ -23,11 +23,6 @@
 			"url": "assets/common/avatar.png",
 			"type": "image",
 			"name": "avatar_png"
-		},
-		{
-			"url": "assets/common/avatar_pc.png",
-			"type": "image",
-			"name": "avatar_pc_png"
 		},
 		{
 			"url": "assets/common/avatar_player.png",
@@ -138,6 +133,26 @@
 			"url": "assets/ticTacToe/img_piece_1.png",
 			"type": "image",
 			"name": "img_piece_o_png"
+		},
+		{
+			"url": "assets/common/avatar_pc_2.png",
+			"type": "image",
+			"name": "avatar_pc_2_png"
+		},
+		{
+			"url": "assets/common/avatar_pc_1.png",
+			"type": "image",
+			"name": "avatar_pc_1_png"
+		},
+		{
+			"url": "assets/common/avatar_pc_3.png",
+			"type": "image",
+			"name": "avatar_pc_3_png"
+		},
+		{
+			"url": "assets/common/point.png",
+			"type": "image",
+			"name": "point_png"
 		}
 	]
 }

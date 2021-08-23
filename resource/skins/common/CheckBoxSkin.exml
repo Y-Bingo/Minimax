@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.CheckBoxSkin" states="up,down,disabled,upAndSelected,downAndSelected,disabledAndSelected"
+        xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Label id="labelDisplay" size="50" textAlign="center" verticalAlign="top" fontFamily="SignusDigital" text="checkBox" x="63.509" verticalCenter="-10" textColor="0xD9C406" bold="true"/>
+    <e:Group width="50" height="50" verticalCenter="0">
+        <e:Image fillMode="scale" alpha="1" source="avatar_png"
+                 alpha.disabled="0.5" alpha.down="0.7"  left="0" right="0" top="0" bottom="0"/>
+        <e:Image source="point_png" alpha.disabled="0.5"
+                 alpha.down="0.7"  includeIn="down,upAndSelected,downAndSelected,disabledAndSelected" left="8" right="8" top="8" bottom="8"/>
+    </e:Group>
+</e:Skin>

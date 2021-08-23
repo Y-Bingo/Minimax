@@ -1,3 +1,4 @@
+import { EPcLevel, PCAvatar, PCName } from '../Model/GameConstant';
 import { Avatar } from './Avatar';
 
 /**
@@ -15,11 +16,28 @@ export class VsPanel extends eui.Component {
 	 * @override
 	 */
 	protected childrenCreated() {
-		this.avatar_pc.avatarName = 'PC';
-		this.avatar_pc.avatar = 'avatar_pc_png';
 		this.avatar_player.avatarName = 'Player';
 		this.avatar_player.avatar = 'avatar_player_png';
 	}
 
-	public setWinner(): void {}
+	/** 设置对手 */
+	public setTarget(level: EPcLevel) {
+		this.avatar_pc.avatarName = PCName[level];
+		this.avatar_pc.avatar = PCAvatar[level];
+	}
+
+	/** 胜者 */
+	public setWinner(isPcWin: boolean): void {
+		if (isPcWin) {
+			this.avatar_player.isWinner = true;
+		} else {
+			this.avatar_player.isWinner = true;
+		}
+	}
+
+	/** 重置 */
+	public reset(): void {
+		this.avatar_pc.isWinner = false;
+		this.avatar_player.isWinner = false;
+	}
 }

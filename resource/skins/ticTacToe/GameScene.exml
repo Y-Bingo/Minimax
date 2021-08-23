@@ -3,7 +3,7 @@
 	 width="750"
 	height="1334" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*">
 	<e:Image id="bgPage" source="bg_playing_png" horizontalCenter="0" verticalCenter="0" visible="true" locked="true"/>
-	<ns1:VsPanel id="vsBar" skinName="skins.VSPanel" y="56.18" visible="true" locked="true"/>
+	<ns1:VsPanel id="vsBar" skinName="skins.VSPanel" y="56.18" visible="true"/>
 	<e:Group id="chessBoard" width="540" height="540" horizontalCenter="0" verticalCenter="-69.5" visible="true" locked="true">
 	</e:Group>
 	<e:Group id="topLayer" left="0" right="0" top="0" bottom="0" touchThrough="true"/>

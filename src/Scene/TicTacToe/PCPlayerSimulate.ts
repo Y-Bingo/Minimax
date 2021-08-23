@@ -2,6 +2,7 @@ import { ArrUtil } from '../../Utils/ArrUtil';
 import EE from '../../Utils/EventUtil';
 import { EMPTY, ETTTPiece, TTT_COMBO } from '../Model/BaseConstant';
 import { GameEventType } from '../Model/EventType';
+import { EPcLevel, PCName } from '../Model/GameConstant';
 import { evaluateLine } from './Evaluate';
 import GameModel from './GameModel';
 
@@ -10,7 +11,9 @@ import GameModel from './GameModel';
  */
 export default class PCPlayerSimulate {
 	/** pc 模拟玩家等级 */
-	public level: string = 'easy';
+	public level: EPcLevel = EPcLevel.EASY;
+	/** 名字 */
+	public name: string = PCName[this.level];
 	/** 着棋类型 */
 	public pieceType: any;
 	/** 步数记录 */
@@ -30,7 +33,7 @@ export default class PCPlayerSimulate {
 	 */
 	private onGameStart(): void {
 		this.step = 0;
-		console.log(`【${this.level}】电脑加入战局`);
+		console.log(`【${this.name}】电脑加入战局`);
 		if (GameModel.isTurnToPc) {
 			this.drawPiece();
 		}
@@ -45,9 +48,8 @@ export default class PCPlayerSimulate {
 	}
 
 	protected drawPiece(): void {
-		console.log(`========== 步数${this.step} ==========`);
-		// const result = this.maxmin(GameModel.board, this.deep);
-		const result = this.maxmin(GameModel.board, this.deep - this.step * 2);
+		console.log(`========== 总步数：${GameModel.totalStep}，步数${this.step} ==========`);
+		const result = this.maxmin(GameModel.board, Math.max(this.deep - GameModel.totalStep, 1));
 		EE.emit(GameEventType.DRAW_PIECE, result);
 		this.step++;
 	}

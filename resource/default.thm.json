@@ -3,9 +3,10 @@
 	"autoGenerateExmlsList": true,
 	"exmls": [
 		"resource/skins/common/Avatar.exml",
+		"resource/skins/common/VSPanel.exml",
+		"resource/skins/common/CheckBoxSkin.exml",
 		"resource/skins/common/BeginPage.exml",
 		"resource/skins/common/ResultPanel.exml",
-		"resource/skins/common/VSPanel.exml",
 		"resource/skins/goBang/GameScene.exml",
 		"resource/skins/ticTacToe/GameScene.exml",
 		"resource/skins/ticTacToe/Piece.exml"

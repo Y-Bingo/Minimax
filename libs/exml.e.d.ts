@@ -7,6 +7,10 @@ declare module skins{
 	}
 }
 declare module skins{
+	class CheckBoxSkin extends eui.Skin{
+	}
+}
+declare module skins{
 	class ResultPanel extends eui.Skin{
 	}
 }

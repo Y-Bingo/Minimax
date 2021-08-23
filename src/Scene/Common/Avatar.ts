@@ -1,3 +1,5 @@
+import { EPcLevel } from '../Model/GameConstant';
+
 /**
  * 公共头像组件
  */
@@ -14,6 +16,7 @@ export class Avatar extends eui.Component {
 	private _name: string = ''; // 玩家
 	private _avatar: string = ''; // 头像
 	private _isWinner: boolean = null; // 胜者
+	public pcLevel: EPcLevel = EPcLevel.NORMAL; // 等级
 
 	/**
 	 * @override

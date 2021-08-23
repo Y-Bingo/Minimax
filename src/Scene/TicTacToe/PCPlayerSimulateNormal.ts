@@ -1,5 +1,6 @@
 import { ArrUtil } from '../../Utils/ArrUtil';
 import { EMPTY, TTT_COL, TTT_COMBO, TTT_ROW } from '../Model/BaseConstant';
+import { EPcLevel } from '../Model/GameConstant';
 import { checkDraw, checkWin } from './Evaluate';
 import GameModel from './GameModel';
 import PCPlayerSimulate from './PCPlayerSimulate';
@@ -9,9 +10,9 @@ import PCPlayerSimulate from './PCPlayerSimulate';
  */
 export default class PCPlayerSimulateNormal extends PCPlayerSimulate {
 	/** pc 模拟玩家等级 */
-	public level: string = 'normal';
+	public level: EPcLevel = EPcLevel.NORMAL;
 	/** 思考深度 */
-	public deep: number = 6;
+	public deep: number = 8;
 
 	/**
 	 * @override
@@ -29,7 +30,7 @@ export default class PCPlayerSimulateNormal extends PCPlayerSimulate {
 			col: -1,
 			score: -Infinity,
 		};
-
+		console.time('开始评估局面：');
 		let curBoardScore = 0;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
@@ -44,10 +45,11 @@ export default class PCPlayerSimulateNormal extends PCPlayerSimulate {
 				}
 				board[i][j] = EMPTY;
 				score[i][j] = curBoardScore;
-				console.log(`【${i},${j}】局面评分： ${score[i][j]}`);
+				// console.log(`【${i},${j}】局面评分： ${score[i][j]}`);
 			}
 		}
-		console.table(score);
+		console.timeEnd('开始评估局面：');
+		// console.table(score);
 		return result;
 	}
 
@@ -57,26 +59,34 @@ export default class PCPlayerSimulateNormal extends PCPlayerSimulate {
 	 * @param deep
 	 */
 	private max(board: any[][], deep: number = 1): any {
-		let score = -Infinity;
-		if (deep === 0 || checkWin(board, GameModel.playerPieceType, TTT_COMBO) || checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
-			score = this.evaluateBoard(board, TTT_COMBO);
-			// console.log(`max ${deep} ${score}`);
-			return score;
+		// 预测步数结束
+		if (deep === 0) {
+			return this.evaluateBoard(board, TTT_COMBO);
+		}
+		// 结束游戏
+		if (checkWin(board, GameModel.playerPieceType, TTT_COMBO)) {
+			return this.evaluateBoard(board, TTT_COMBO);
+		}
+		// 平局
+		if (checkDraw(board, TTT_ROW, TTT_COL)) {
+			return 0;
 		}
 		const rows = TTT_ROW;
 		const cols = TTT_COL;
+		let best = -Infinity;
+		let curScore = 0;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
 				if (board[i][j] !== EMPTY) continue;
 				board[i][j] = GameModel.pcPieceType;
-				let curScore = this.min(board, deep - 1);
-				if (score < curScore) {
-					score = curScore;
+				curScore = this.min(board, deep);
+				if (curScore > best) {
+					best = curScore;
 				}
 				board[i][j] = EMPTY;
 			}
 		}
-		return score;
+		return best;
 	}
 
 	/**
@@ -85,27 +95,34 @@ export default class PCPlayerSimulateNormal extends PCPlayerSimulate {
 	 * @param deep
 	 */
 	private min(board: any[][], deep: number = 1): any {
-		let score = Infinity;
-		if (deep === 0 || checkWin(board, GameModel.pcPieceType, TTT_COMBO) || checkDraw(GameModel.board, TTT_ROW, TTT_COL)) {
-			score = this.evaluateBoard(board, TTT_COMBO);
-			// console.log(`min ${deep} ${score}`);
-			return score;
+		// 预测步数结束
+		if (deep === 0) {
+			return this.evaluateBoard(board, TTT_COMBO);
+		}
+		// 结束游戏
+		if (checkWin(board, GameModel.playerPieceType, TTT_COMBO)) {
+			return this.evaluateBoard(board, TTT_COMBO);
+		}
+		// 平局
+		if (checkDraw(board, TTT_ROW, TTT_COL)) {
+			return 0;
 		}
 		const rows = TTT_ROW;
 		const cols = TTT_COL;
+		let best = Infinity;
+		let curScore = 0;
 		for (let i = 0; i < rows; i++) {
 			for (let j = 0; j < cols; j++) {
 				if (board[i][j] !== EMPTY) continue;
 				// 尝试使用 board
 				board[i][j] = GameModel.playerPieceType;
-				// score = Math.min(score, this.max(board, deep - 1));
-				let curScore = this.max(board, deep - 1);
-				if (score > curScore) {
-					score = curScore;
+				curScore = this.max(board, deep - 1);
+				if (curScore < best) {
+					best = curScore;
 				}
 				board[i][j] = EMPTY;
 			}
 		}
-		return score;
+		return best;
 	}
 }

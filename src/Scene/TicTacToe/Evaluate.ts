@@ -14,7 +14,7 @@ export enum EScoreTable {
 	NONE = 0,
 	ONE = 1,
 	TWO = 11,
-	THREE = 20,
+	THREE = 30,
 	BLOCK = -5,
 }
 
